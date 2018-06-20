@@ -24,49 +24,40 @@ class Blockchain:
         :open_transactions (private): The list of open transactions
         :hosting_node: The connected node (which runs the blockchain).
     """
-
-     def __init__(self,hosting_node_id):
-         """The constructor of the Blockchain class"""
-         # Stating block for the blockchain
-         genesis_block = Block(0, '', [], 100, 0)
-         # Initializing empty blockchain list
-         self.chain = [genesis_block]
+    def __init__(self, hosting_node_id):
+        """The constructor of the Blockchain class."""
+        # Our starting block for the blockchain
+        genesis_block = Block(0, '', [], 100, 0)
+        # Initializing our (empty) blockchain list
+        self.chain = [genesis_block]
         # Unhandled transactions
         self.__open_transactions = []
         self.load_data()
         self.hosting_node = hosting_node_id
 
+    # This turns the chain attribute into a property with a getter (the method below) and a setter (@chain.setter)
     @property
     def chain(self):
         return self.__chain[:]
 
-    @chain.setter
+    # The setter for the chain property
+    @chain.setter 
     def chain(self, val):
         self.__chain = val
 
+
     def get_open_transactions(self):
-        """Returns a copy of the open transactions list"""
+        """Returns a copy of the open transactions list."""
         return self.__open_transactions[:]
 
     def load_data(self):
-        """Initialize blockchain and open transaction data from a file."""
+        """Initialize blockchain + open transactions data from a file."""
         try:
             with open('blockchain.txt', mode='r') as f:
+                # file_content = pickle.loads(f.read())
                 file_content = f.readlines()
-                blockchain = json.loads(file_content[0][:-1]
-                #Need to update the loaded data because Transtactions should use OrderedDict
-                updated_blockchain = []
-                for block in blockchain:
-                    converted_tx = [Transaction(
-                        tx['sender'], tx['recipient'], tx['signature'], tx['amount']) for tx in block ['transactions']
-                    )]
-                    updated_block = Block(
-                        block['index'], block['previous_hash'], converted_tx, block['proof'], block['timestamp']
-                    )
-                    
-
-
-# open_transactions = file_content['ot']
+                # blockchain = file_content['chain']
+                # open_transactions = file_content['ot']
                 blockchain = json.loads(file_content[0][:-1])
                 # We need to convert  the loaded data because Transactions should use OrderedDict
                 updated_blockchain = []
